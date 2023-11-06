@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import styled from 'styled-components/native';
-import { colors } from '../components/colors';
 import { Container } from '../components/shared';
 import background from '../assets/backgounds/home_bg.png';
 import FormSection from '../components/Forms/FormSection';

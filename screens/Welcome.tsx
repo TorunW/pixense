@@ -44,7 +44,7 @@ const Welcome = (): ReactElement => {
         </TopSection>
         <BottomSection>
           <BigText textStyles={{ width: '70%', marginBottom: 25 }}>
-            Make your pictures make sense
+            Make sense of your pictures
           </BigText>
           <SmallText textStyles={{ width: '70%', marginBottom: 25 }}>
             Best ai generator, giving you captions to your pictures making

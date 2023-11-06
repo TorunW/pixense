@@ -2,6 +2,8 @@ import React, { useCallback, useEffect } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import RootStack from './components/navigators/RootStack';
+import { StoreProvider } from 'easy-peasy';
+import { store } from './store/module';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,5 +34,9 @@ export default function App() {
     return null;
   }
 
-  return <RootStack onReady={onLayoutRootView} />;
+  return (
+    <StoreProvider store={store}>
+      <RootStack onReady={onLayoutRootView} />
+    </StoreProvider>
+  );
 }
