@@ -4,6 +4,8 @@ import { useFonts } from 'expo-font';
 import RootStack from './components/navigators/RootStack';
 import { StoreProvider } from 'easy-peasy';
 import { store } from './store/module';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import 'react-native-url-polyfill/auto';
 
 SplashScreen.preventAutoHideAsync();
 

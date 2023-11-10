@@ -5,6 +5,7 @@ import {
   thunk,
   createTypedHooks,
   Thunk,
+  Store,
 } from 'easy-peasy';
 import { Action } from 'easy-peasy';
 import axios from 'axios';
@@ -20,6 +21,10 @@ export interface StoreModel {
   tags: TagObject[];
   setTags: Action<StoreModel, TagObject[]>;
   getTags: Thunk<StoreModel, string>;
+  clickCounter: number;
+  setClickCounter: Action<StoreModel, number>;
+  timestamp: number | null;
+  setTimestamp: Action<StoreModel, number>;
 }
 
 export const store = createStore<StoreModel>({
@@ -42,6 +47,14 @@ export const store = createStore<StoreModel>({
     });
     const tags = response.data?.result.tags; */
     actions.setTags(data);
+  }),
+  clickCounter: 0,
+  setClickCounter: action((state, payload) => {
+    state.clickCounter = payload;
+  }),
+  timestamp: null,
+  setTimestamp: action((state, payload) => {
+    state.timestamp = payload;
   }),
 });
 
