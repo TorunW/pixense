@@ -8,6 +8,7 @@ import FormSection from '../components/Forms/FormSection';
 const HomeContainer = styled(Container)`
   width: 100%;
   flex: 1;
+  margin-top: 32px;
 `;
 
 const BackgroundImage = styled.ImageBackground`
@@ -19,12 +20,12 @@ const BackgroundImage = styled.ImageBackground`
 
 const Home = (): ReactElement => {
   return (
-    <HomeContainer>
-      <StatusBar style='dark' />
-      <BackgroundImage source={background}>
+    <BackgroundImage source={background}>
+      <StatusBar style='light' />
+      <HomeContainer>
         <FormSection />
-      </BackgroundImage>
-    </HomeContainer>
+      </HomeContainer>
+    </BackgroundImage>
   );
 };
 

@@ -1,40 +1,68 @@
-import React, { FunctionComponent, ReactElement } from 'react';
+import React, { ReactElement, SetStateAction } from 'react';
 import styled from 'styled-components/native';
+import { GestureResponderEvent, StyleProp } from 'react-native';
 import { colors } from '../colors';
-import RegularText from '../Texts/RegularText';
 import {
-  GestureResponderEvent,
-  StyleProp,
-  TextStyle,
-  ViewStyle,
-} from 'react-native';
+  ButtonGroup,
+  ButtonGroupProps,
+  withTheme,
+  makeStyles,
+} from '@rneui/themed';
+import { ThemeProvider, Button, createTheme } from '@rneui/themed';
+import { color } from '@rneui/base';
 
-const ButtonView = styled.TouchableOpacity`
-  align-items: center;
-  background-color: ${colors.primary};
-  width: 100%;
-  padding: 20px;
-  border-radius: 20px;
-`;
+const theme = createTheme({
+  components: {
+    ButtonGroup: {
+      containerStyle: {
+        borderRadius: 25,
+        borderColor: `${colors.secondary}`,
+        backgroundColor: 'transparent',
+      },
+      selectedButtonStyle: {
+        backgroundColor: `${colors.primary}`,
+        borderRadius: 25,
+      },
+      buttonContainerStyle: {
+        borderColor: 'transparent',
+      },
+      textStyle: { fontFamily: 'Poppins-Regular' },
+      selectedTextStyle: { fontFamily: 'Poppins-Medium' },
+      /*   
+      activeOpacity,
+      disabledSelectedStyle,
+      selectedButtonStyle,
+      selectedTextStyle,
+      textStyle, */
+    },
+  },
+});
 
 interface ButtonProps {
-  btnStyles?: StyleProp<ViewStyle>;
+  buttons: Array<string>;
+  selectedIndex: number;
   onPress: ((event: GestureResponderEvent) => void) | undefined;
-  textStyle: StyleProp<TextStyle>;
-  children: React.ReactNode;
 }
 
 const ToggleButton = ({
-  btnStyles,
+  buttons,
+  selectedIndex,
   onPress,
-  textStyle,
-  children,
 }: ButtonProps): ReactElement => {
   return (
-    <ButtonView onPress={onPress} style={btnStyles}>
-      <RegularText textStyles={textStyle}>{children}</RegularText>
-    </ButtonView>
+    <ThemeProvider theme={theme}>
+      <ButtonGroup
+        buttons={buttons}
+        selectedIndex={selectedIndex}
+        onPress={onPress}
+      />
+    </ThemeProvider>
   );
 };
 
 export default ToggleButton;
+
+/* <ButtonView onPress={onPress} style={btnStyles}>
+        <RegularText textStyles={textStyle}>Upload</RegularText>
+      </ButtonView>
+     */
