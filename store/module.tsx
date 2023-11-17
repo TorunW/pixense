@@ -9,7 +9,6 @@ import {
 } from 'easy-peasy';
 import { Action } from 'easy-peasy';
 import axios from 'axios';
-import { data } from '../assets/test';
 let base64 = require('base-64');
 
 export interface TagObject {
@@ -25,6 +24,8 @@ export interface StoreModel {
   setClickCounter: Action<StoreModel, number>;
   timestamp: number | null;
   setTimestamp: Action<StoreModel, number>;
+  selectedImage: string | null;
+  setSelectedImage: Action<StoreModel, string>;
 }
 
 export const store = createStore<StoreModel>({
@@ -40,13 +41,13 @@ export const store = createStore<StoreModel>({
       `https://${apiKey}:${apiSecret}@api.imagga.com/v2/tags?image_url=` +
       encodeURIComponent(imageUrl);
     const auth = base64.encode(`${apiKey}:${apiSecret}`);
-    /* const response = await axios.get(url, {
+    const response = await axios.get(url, {
       headers: {
         Authorization: `Basic ${auth}`,
       },
     });
-    const tags = response.data?.result.tags; */
-    actions.setTags(data);
+    const tags = response.data?.result.tags;
+    actions.setTags(tags);
   }),
   clickCounter: 0,
   setClickCounter: action((state, payload) => {
@@ -55,6 +56,10 @@ export const store = createStore<StoreModel>({
   timestamp: null,
   setTimestamp: action((state, payload) => {
     state.timestamp = payload;
+  }),
+  selectedImage: '',
+  setSelectedImage: action((state, payload) => {
+    state.selectedImage = payload;
   }),
 });
 

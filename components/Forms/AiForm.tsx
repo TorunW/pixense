@@ -17,7 +17,7 @@ import { API_KEY } from '@env';
 import { Configuration, OpenAIApi } from 'openai';
 import { Container } from '../shared';
 import styled from 'styled-components/native';
-
+import { useStoreDispatch } from '../../store/module';
 const configuration = new Configuration({
   apiKey: API_KEY,
 });
@@ -38,6 +38,7 @@ const AiForm = (): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const [userPrompt, setUserPrompt] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const dispatch = useStoreDispatch();
 
   useEffect(() => {
     getAmountOfClickOnRefresh();
@@ -98,9 +99,9 @@ const AiForm = (): ReactElement => {
         n: 1,
         size: '512x512',
       });
-      console.log(res.data.data[0].url);
       if (res.data.data[0]) {
         setImageUrl(res.data.data[0].url as string);
+        dispatch.getTags(imageUrl);
       }
     } catch (error) {
       console.log(error);
@@ -108,7 +109,6 @@ const AiForm = (): ReactElement => {
 
     setIsLoading(false);
   };
-  console.log(clickCounter);
 
   const onChange = (
     e: NativeSyntheticEvent<TextInputChangeEventData>

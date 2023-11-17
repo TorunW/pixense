@@ -5,7 +5,6 @@ import ToggleButton from '../Buttons/ToggleButton';
 import { Container } from '../shared';
 
 const FormSection = (): ReactElement => {
-  const [formType, setFormType] = useState('upload');
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   return (
@@ -18,7 +17,7 @@ const FormSection = (): ReactElement => {
         buttons={['Ai', 'Upload']}
       />
 
-      {formType === 'ai' ? <AiForm /> : <UploadForm />}
+      {selectedIndex === 0 ? <AiForm /> : <UploadForm />}
     </Container>
   );
 };

@@ -41,7 +41,7 @@ const theme = createTheme({
 interface ButtonProps {
   buttons: Array<string>;
   selectedIndex: number;
-  onPress: ((event: GestureResponderEvent) => void) | undefined;
+  onPress: (value: number) => number | void;
 }
 
 const ToggleButton = ({
