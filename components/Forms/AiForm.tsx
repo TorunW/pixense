@@ -18,6 +18,9 @@ import { Configuration, OpenAIApi } from 'openai';
 import { Container } from '../shared';
 import styled from 'styled-components/native';
 import { useStoreDispatch } from '../../store/module';
+import placeholder_img from '../../assets/backgounds/image1_78.jpeg';
+import BigImage from '../Images/BigImage';
+
 const configuration = new Configuration({
   apiKey: API_KEY,
 });
@@ -119,7 +122,7 @@ const AiForm = (): ReactElement => {
 
   return (
     <FormContainer>
-      <RegularText>AiForm</RegularText>
+      <BigImage source={placeholder_img} />
       {imageUrl && (
         <Image
           source={{ uri: imageUrl }}
@@ -149,9 +152,3 @@ const AiForm = (): ReactElement => {
 };
 
 export default AiForm;
-
-// amount of generated images, start at 0 √
-// amount of images saved in async storage to prevent close and open app to reset √
-// when the first image is generated set current date plus time, save time in async storage
-// if 60 minutes has passed, the amount of images will be set back to 0
-// if the amount of images is 4, an api request wont be possible (text to explain the user has to wait)

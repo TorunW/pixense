@@ -11,6 +11,8 @@ import SmallText from '../Texts/SmallText';
 import RegularButton from '../Buttons/RegularButton';
 import { storage } from '../../firebaseConfig';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
+import BigImage from '../Images/BigImage';
+import placeholder_img from '../../assets/backgounds/instagram-model-outfit-in-a-greenhouse-full-body.png';
 
 const UploadForm = (): ReactElement => {
   const state = useStoreState((state) => state);
@@ -95,6 +97,7 @@ const UploadForm = (): ReactElement => {
 
   return (
     <View>
+      <BigImage source={placeholder_img} />
       <RegularText>Upload Form</RegularText>
       <SmallText>
         Upload your image to get an Ai generated description.
