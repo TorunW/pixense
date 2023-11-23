@@ -20,6 +20,7 @@ import styled from 'styled-components/native';
 import { useStoreDispatch } from '../../store/module';
 import placeholder_img from '../../assets/backgounds/image1_78.jpeg';
 import BigImage from '../Images/BigImage';
+import TagForm from './TagForm';
 
 const configuration = new Configuration({
   apiKey: API_KEY,
@@ -36,20 +37,20 @@ const BottomSection = styled.View`
   width: 100%;
   flex: 1;
   padding: 25px;
-  align-items: center;
-  justify-content: space-between;
+  gap: 16px;
 `;
 
 const AiForm = (): ReactElement => {
   const clickCounter = useStoreState((state) => state.clickCounter);
   const timestamp = useStoreState((state) => state.timestamp);
+  const tags = useStoreState((state) => state.tags);
   const setClickCounter = useStoreActions((actions) => actions.setClickCounter);
   const setTimestamp = useStoreActions((actions) => actions.setTimestamp);
   const [limitReached, setLimitReached] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [userPrompt, setUserPrompt] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  const [error, setError] = useState(true);
+  const [error, setError] = useState(false);
   const dispatch = useStoreDispatch();
 
   useEffect(() => {
@@ -120,7 +121,7 @@ const AiForm = (): ReactElement => {
         dispatch.getTags(imageUrl);
       }
     } catch (error) {
-      console.log(error);
+      console.log(error, 'hihihih');
     }
 
     setIsLoading(false);
@@ -135,22 +136,17 @@ const AiForm = (): ReactElement => {
 
   return (
     <FormContainer>
-      <BigImage source={placeholder_img} />
+      <BigImage
+        source={imageUrl !== '' ? { uri: imageUrl } : placeholder_img}
+      />
       <BottomSection>
-        {imageUrl && (
-          <Image
-            source={{ uri: imageUrl }}
-            width={250}
-            height={250}
-            style={{ borderRadius: 5, marginVertical: 16 }}
-          />
-        )}
+        <TagForm />
         <RegularInput
           value={userPrompt}
           onChange={onChange}
           placeholder='what do you want to see'
         />
-        {error && <SmallText textStyles={{ fontSize: 16 }}>Errro</SmallText>}
+        {error && <SmallText textStyles={{ fontSize: 16 }}>Errror</SmallText>}
         {limitReached === true ? (
           <RegularText>Limit reached try again in an hour</RegularText>
         ) : (

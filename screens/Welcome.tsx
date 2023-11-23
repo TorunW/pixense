@@ -6,9 +6,9 @@ import { colors } from '../components/colors';
 import BigText from '../components/Texts/BigText';
 import SmallText from '../components/Texts/SmallText';
 import RegularButton from '../components/Buttons/RegularButton';
-import background from '../assets/backgounds/skyscraper_6.png';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+import background from '../assets/backgounds/image0_3.jpeg';
 
 const WelcomeContainer = styled(Container)`
   background-color: ${colors.secondary};

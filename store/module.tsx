@@ -1,6 +1,5 @@
 import {
   createStore,
-  computed,
   action,
   thunk,
   createTypedHooks,
