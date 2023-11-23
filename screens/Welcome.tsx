@@ -6,7 +6,9 @@ import { colors } from '../components/colors';
 import BigText from '../components/Texts/BigText';
 import SmallText from '../components/Texts/SmallText';
 import RegularButton from '../components/Buttons/RegularButton';
-import background from '../assets/backgounds/welcome_bg.jpeg';
+import background from '../assets/backgounds/skyscraper_6.png';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
 
 const WelcomeContainer = styled(Container)`
   background-color: ${colors.secondary};
@@ -35,11 +37,23 @@ const BottomSection = styled.View`
 `;
 
 const Welcome = (): ReactElement => {
+  const navigation = useNavigation();
+
   return (
     <>
       <StatusBar style='light' />
       <WelcomeContainer>
         <TopSection>
+          <LinearGradient
+            colors={['transparent', `${colors.secondary}`]}
+            end={{ x: 0.5, y: 0.99 }}
+            style={{
+              height: '100%',
+              width: '100%',
+              position: 'absolute',
+              zIndex: 10,
+            }}
+          ></LinearGradient>
           <TopImage source={background} />
         </TopSection>
         <BottomSection>
@@ -51,9 +65,7 @@ const Welcome = (): ReactElement => {
             social media posting easier.
           </SmallText>
           <RegularButton
-            onPress={() => {
-              console.log('pushbtn');
-            }}
+            onPress={() => navigation.navigate('Home')}
             textStyle={{}}
           >
             Get Started
