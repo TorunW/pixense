@@ -5,7 +5,6 @@ import {
   thunk,
   createTypedHooks,
   Thunk,
-  Store,
 } from 'easy-peasy';
 import { Action } from 'easy-peasy';
 import axios from 'axios';

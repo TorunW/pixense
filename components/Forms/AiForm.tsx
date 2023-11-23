@@ -32,6 +32,14 @@ const FormContainer = styled(Container)`
   flex: 1;
 `;
 
+const BottomSection = styled.View`
+  width: 100%;
+  flex: 1;
+  padding: 25px;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 const AiForm = (): ReactElement => {
   const clickCounter = useStoreState((state) => state.clickCounter);
   const timestamp = useStoreState((state) => state.timestamp);
@@ -41,6 +49,7 @@ const AiForm = (): ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
   const [userPrompt, setUserPrompt] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [error, setError] = useState(true);
   const dispatch = useStoreDispatch();
 
   useEffect(() => {
@@ -57,18 +66,22 @@ const AiForm = (): ReactElement => {
   };
 
   const isLimitReached = async () => {
-    setIsLoading(true);
+    if (userPrompt !== '') {
+      setIsLoading(true);
 
-    if (clickCounter === 0) {
-      const timeOfFirstClick = Date.now();
-      setTimestamp(timeOfFirstClick);
-      await AsyncStorage.setItem('timestamp', timeOfFirstClick.toString());
-      generateImage();
-    } else if (clickCounter > 0 && clickCounter < 4) {
-      generateImage();
+      if (clickCounter === 0) {
+        const timeOfFirstClick = Date.now();
+        setTimestamp(timeOfFirstClick);
+        await AsyncStorage.setItem('timestamp', timeOfFirstClick.toString());
+        generateImage();
+      } else if (clickCounter > 0 && clickCounter < 4) {
+        generateImage();
+      } else {
+        checkTimelapsedSinceFirstImage();
+        setIsLoading(false);
+      }
     } else {
-      checkTimelapsedSinceFirstImage();
-      setIsLoading(false);
+      console.log('empty');
     }
   };
 
@@ -123,30 +136,33 @@ const AiForm = (): ReactElement => {
   return (
     <FormContainer>
       <BigImage source={placeholder_img} />
-      {imageUrl && (
-        <Image
-          source={{ uri: imageUrl }}
-          width={250}
-          height={250}
-          style={{ borderRadius: 5, marginVertical: 16 }}
+      <BottomSection>
+        {imageUrl && (
+          <Image
+            source={{ uri: imageUrl }}
+            width={250}
+            height={250}
+            style={{ borderRadius: 5, marginVertical: 16 }}
+          />
+        )}
+        <RegularInput
+          value={userPrompt}
+          onChange={onChange}
+          placeholder='what do you want to see'
         />
-      )}
-      <RegularInput
-        value={userPrompt}
-        onChange={onChange}
-        placeholder='what do you want to see'
-      />
-      {limitReached === true ? (
-        <SmallText>Limit reached try again in an hour</SmallText>
-      ) : (
-        <RegularButton textStyle={{}} onPress={() => isLimitReached()}>
-          {isLoading !== true ? (
-            `Click here to genertate image ${clickCounter}`
-          ) : (
-            <ActivityIndicator size='large' color={colors.white} />
-          )}
-        </RegularButton>
-      )}
+        {error && <SmallText textStyles={{ fontSize: 16 }}>Errro</SmallText>}
+        {limitReached === true ? (
+          <RegularText>Limit reached try again in an hour</RegularText>
+        ) : (
+          <RegularButton textStyle={{}} onPress={() => isLimitReached()}>
+            {isLoading !== true ? (
+              `Click here to genertate image ${clickCounter}`
+            ) : (
+              <ActivityIndicator size='large' color={colors.white} />
+            )}
+          </RegularButton>
+        )}
+      </BottomSection>
     </FormContainer>
   );
 };

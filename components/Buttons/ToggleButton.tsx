@@ -1,15 +1,7 @@
-import React, { ReactElement, SetStateAction } from 'react';
-import styled from 'styled-components/native';
-import { GestureResponderEvent, StyleProp } from 'react-native';
+import React, { ReactElement } from 'react';
 import { colors } from '../colors';
-import {
-  ButtonGroup,
-  ButtonGroupProps,
-  withTheme,
-  makeStyles,
-} from '@rneui/themed';
-import { ThemeProvider, Button, createTheme } from '@rneui/themed';
-import { color } from '@rneui/base';
+import { ButtonGroup } from '@rneui/themed';
+import { ThemeProvider, createTheme } from '@rneui/themed';
 
 const theme = createTheme({
   components: {
@@ -18,6 +10,7 @@ const theme = createTheme({
         borderRadius: 25,
         borderColor: `${colors.secondary}`,
         backgroundColor: 'transparent',
+        marginTop: 35,
       },
       selectedButtonStyle: {
         backgroundColor: `${colors.primary}`,
@@ -28,12 +21,6 @@ const theme = createTheme({
       },
       textStyle: { fontFamily: 'Poppins-Regular' },
       selectedTextStyle: { fontFamily: 'Poppins-Medium' },
-      /*   
-      activeOpacity,
-      disabledSelectedStyle,
-      selectedButtonStyle,
-      selectedTextStyle,
-      textStyle, */
     },
   },
 });

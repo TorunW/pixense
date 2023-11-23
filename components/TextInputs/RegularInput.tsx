@@ -19,7 +19,7 @@ const StyledInput = styled.TextInput.attrs({
   text-align: left;
   border: solid 1px ${colors.white};
   border-radius: 5px;
-  padding: 8px;
+  padding: 12px;
   color: ${colors.white};
   width: 100%;
 `;
