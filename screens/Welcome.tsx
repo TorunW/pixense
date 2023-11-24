@@ -9,6 +9,8 @@ import RegularButton from '../components/Buttons/RegularButton';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import background from '../assets/backgounds/welcome_bg5.png';
+import { RootStackParamList } from '../components/navigators/RootStack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const WelcomeContainer = styled(Container)`
   background-color: ${colors.secondary};
@@ -36,8 +38,13 @@ const BottomSection = styled.View`
   justify-content: flex-end;
 `;
 
+type WelcomeScreenNavigationProps = NativeStackNavigationProp<
+  RootStackParamList,
+  'Home'
+>;
+
 const Welcome = (): ReactElement => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<WelcomeScreenNavigationProps>();
 
   return (
     <>
