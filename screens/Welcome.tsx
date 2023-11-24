@@ -8,7 +8,7 @@ import SmallText from '../components/Texts/SmallText';
 import RegularButton from '../components/Buttons/RegularButton';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
-import background from '../assets/backgounds/image0_3.jpeg';
+import background from '../assets/backgounds/welcome_bg5.png';
 
 const WelcomeContainer = styled(Container)`
   background-color: ${colors.secondary};
@@ -19,7 +19,7 @@ const WelcomeContainer = styled(Container)`
 
 const TopSection = styled.View`
   width: 100%;
-  flex: 1;
+  flex: 2;
   max-height: 55%;
 `;
 
@@ -45,7 +45,12 @@ const Welcome = (): ReactElement => {
       <WelcomeContainer>
         <TopSection>
           <LinearGradient
-            colors={['transparent', `${colors.secondary}`]}
+            colors={[
+              'transparent',
+              'transparent',
+              'transparent',
+              `${colors.secondary}`,
+            ]}
             end={{ x: 0.5, y: 0.99 }}
             style={{
               height: '100%',
@@ -57,12 +62,12 @@ const Welcome = (): ReactElement => {
           <TopImage source={background} />
         </TopSection>
         <BottomSection>
-          <BigText textStyles={{ width: '70%', marginBottom: 25 }}>
+          <BigText textStyles={{ width: '90%', marginBottom: 16 }}>
             Make sense of your pictures
           </BigText>
-          <SmallText textStyles={{ width: '70%', marginBottom: 25 }}>
-            Best ai generator, giving you captions to your pictures making
-            social media posting easier.
+          <SmallText textStyles={{ width: '80%', marginBottom: 48 }}>
+            Ai generator, giving you tags to your pictures making social media
+            posting easier.
           </SmallText>
           <RegularButton
             onPress={() => navigation.navigate('Home')}
