@@ -1,11 +1,9 @@
 import {
-  View,
   ActivityIndicator,
   NativeSyntheticEvent,
   TextInputChangeEventData,
-  Image,
 } from 'react-native';
-import React, { ReactElement, useEffect, useRef, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import RegularText from '../Texts/RegularText';
 import RegularButton from '../Buttons/RegularButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -38,6 +36,13 @@ const BottomSection = styled.View`
   flex: 1;
   padding: 25px;
   gap: 16px;
+`;
+
+const InputRow = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
 `;
 
 const AiForm = (): ReactElement => {
@@ -141,18 +146,21 @@ const AiForm = (): ReactElement => {
       />
       <BottomSection>
         <TagForm />
-        <RegularInput
-          value={userPrompt}
-          onChange={onChange}
-          placeholder='what do you want to see'
-        />
+        <InputRow>
+          <RegularInput
+            value={userPrompt}
+            onChange={onChange}
+            placeholder='Enter your prompt'
+          />
+          <SmallText>{clickCounter}/4</SmallText>
+        </InputRow>
         {error && <SmallText textStyles={{ fontSize: 16 }}>Errror</SmallText>}
         {limitReached === true ? (
           <RegularText>Limit reached try again in an hour</RegularText>
         ) : (
           <RegularButton textStyle={{}} onPress={() => isLimitReached()}>
             {isLoading !== true ? (
-              `Click here to genertate image ${clickCounter}`
+              `Generate`
             ) : (
               <ActivityIndicator size='large' color={colors.white} />
             )}

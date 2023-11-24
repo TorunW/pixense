@@ -4,9 +4,7 @@ import { colors } from '../colors';
 import { NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
 
 const StyledInputContainer = styled.View`
-  width: 100%;
-  padding-left: 20px;
-  padding-right: 20px;
+  width: 90%;
 `;
 
 const StyledInput = styled.TextInput.attrs({
@@ -19,7 +17,7 @@ const StyledInput = styled.TextInput.attrs({
   text-align: left;
   border: solid 1px ${colors.white};
   border-radius: 5px;
-  padding: 12px;
+  padding: 8px;
   color: ${colors.white};
   width: 100%;
 `;
