@@ -22,6 +22,8 @@ export interface StoreModel {
   setClickCounter: Action<StoreModel, number>;
   timestamp: number | null;
   setTimestamp: Action<StoreModel, number>;
+  aiImageUrl: string | null;
+  setAiImageUrl: Action<StoreModel, string>;
   selectedImage: string | null;
   setSelectedImage: Action<StoreModel, string>;
 }
@@ -54,6 +56,10 @@ export const store = createStore<StoreModel>({
   timestamp: null,
   setTimestamp: action((state, payload) => {
     state.timestamp = payload;
+  }),
+  aiImageUrl: '',
+  setAiImageUrl: action((state, payload) => {
+    state.aiImageUrl = payload;
   }),
   selectedImage: '',
   setSelectedImage: action((state, payload) => {

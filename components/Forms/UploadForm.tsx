@@ -1,4 +1,4 @@
-import { Image, View } from 'react-native';
+import { ActivityIndicator, Image, View } from 'react-native';
 import React, { ReactElement, useEffect, useState } from 'react';
 import RegularText from '../Texts/RegularText';
 import * as ImagePicker from 'expo-image-picker';
@@ -11,8 +11,7 @@ import SmallText from '../Texts/SmallText';
 import RegularButton from '../Buttons/RegularButton';
 import { storage } from '../../firebaseConfig';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
-import BigImage from '../Images/BigImage';
-import placeholder_img from '../../assets/backgounds/instagram-model-outfit-in-a-greenhouse-full-body.png';
+import { colors } from '../colors';
 
 const UploadForm = (): ReactElement => {
   const state = useStoreState((state) => state);
@@ -96,25 +95,19 @@ const UploadForm = (): ReactElement => {
   };
 
   return (
-    <View>
-      <BigImage source={placeholder_img} />
-      <RegularText>Upload Form</RegularText>
-      <SmallText>
-        Upload your image to get an Ai generated description.
-      </SmallText>
-      {selectedImage && (
-        <Image
-          source={{
-            uri: selectedImage,
-          }}
-          height={200}
-          width={200}
-        />
-      )}
-      <RegularButton textStyle={{}} onPress={openImagePicker}>
-        Pick image
+    <>
+      <RegularButton
+        disable={isLoading !== true ? false : true}
+        textStyle={{}}
+        onPress={openImagePicker}
+      >
+        {isLoading !== true ? (
+          `Select an image`
+        ) : (
+          <ActivityIndicator size='large' color={colors.white} />
+        )}
       </RegularButton>
-    </View>
+    </>
   );
 };
 

@@ -13,30 +13,14 @@ import { colors } from '../colors';
 import RegularInput from '../TextInputs/RegularInput';
 import { API_KEY } from '@env';
 import { Configuration, OpenAIApi } from 'openai';
-import { Container } from '../shared';
 import styled from 'styled-components/native';
 import { useStoreDispatch } from '../../store/module';
-import placeholder_img from '../../assets/backgounds/image1_78.jpeg';
-import BigImage from '../Images/BigImage';
-import TagForm from './TagForm';
 
 const configuration = new Configuration({
   apiKey: API_KEY,
 });
 
 const openai = new OpenAIApi(configuration);
-
-const FormContainer = styled(Container)`
-  width: 100%;
-  flex: 1;
-`;
-
-const BottomSection = styled.View`
-  width: 100%;
-  flex: 1;
-  padding: 25px;
-  gap: 16px;
-`;
 
 const InputRow = styled.View`
   flex-direction: row;
@@ -48,7 +32,6 @@ const InputRow = styled.View`
 const AiForm = (): ReactElement => {
   const clickCounter = useStoreState((state) => state.clickCounter);
   const timestamp = useStoreState((state) => state.timestamp);
-  const tags = useStoreState((state) => state.tags);
   const setClickCounter = useStoreActions((actions) => actions.setClickCounter);
   const setTimestamp = useStoreActions((actions) => actions.setTimestamp);
   const [limitReached, setLimitReached] = useState(false);
@@ -140,34 +123,32 @@ const AiForm = (): ReactElement => {
   };
 
   return (
-    <FormContainer>
-      <BigImage
-        source={imageUrl !== '' ? { uri: imageUrl } : placeholder_img}
-      />
-      <BottomSection>
-        <TagForm />
-        <InputRow>
-          <RegularInput
-            value={userPrompt}
-            onChange={onChange}
-            placeholder='Enter your prompt'
-          />
-          <SmallText>{clickCounter}/4</SmallText>
-        </InputRow>
-        {error && <SmallText textStyles={{ fontSize: 16 }}>Errror</SmallText>}
-        {limitReached === true ? (
-          <RegularText>Limit reached try again in an hour</RegularText>
-        ) : (
-          <RegularButton textStyle={{}} onPress={() => isLimitReached()}>
-            {isLoading !== true ? (
-              `Generate`
-            ) : (
-              <ActivityIndicator size='large' color={colors.white} />
-            )}
-          </RegularButton>
-        )}
-      </BottomSection>
-    </FormContainer>
+    <>
+      <InputRow>
+        <RegularInput
+          value={userPrompt}
+          onChange={onChange}
+          placeholder='Enter your prompt'
+        />
+        <SmallText>{clickCounter}/4</SmallText>
+      </InputRow>
+      {error && <SmallText textStyles={{ fontSize: 16 }}>Errror</SmallText>}
+      {limitReached === true ? (
+        <RegularText>Limit reached try again in an hour</RegularText>
+      ) : (
+        <RegularButton
+          disable={isLoading !== true ? false : true}
+          textStyle={{}}
+          onPress={() => isLimitReached()}
+        >
+          {isLoading !== true ? (
+            `Generate`
+          ) : (
+            <ActivityIndicator size='large' color={colors.white} />
+          )}
+        </RegularButton>
+      )}
+    </>
   );
 };
 

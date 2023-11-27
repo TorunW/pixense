@@ -40,7 +40,7 @@ const BottomSection = styled.View`
 
 type WelcomeScreenNavigationProps = NativeStackNavigationProp<
   RootStackParamList,
-  'Home'
+  'Ai'
 >;
 
 const Welcome = (): ReactElement => {
@@ -77,7 +77,7 @@ const Welcome = (): ReactElement => {
             posting easier.
           </SmallText>
           <RegularButton
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => navigation.navigate('Ai')}
             textStyle={{}}
           >
             Get Started

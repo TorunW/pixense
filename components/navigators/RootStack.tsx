@@ -2,11 +2,13 @@ import React, { ReactElement } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Welcome from '../../screens/Welcome';
-import Home from '../../screens/Home';
+import Ai from '../../screens/Ai';
+import Upload from '../../screens/Upload';
 
 export type RootStackParamList = {
   Welcome: undefined;
-  Home: undefined;
+  Ai: undefined;
+  Upload: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -14,15 +16,20 @@ const Stack = createStackNavigator<RootStackParamList>();
 const RootStack = ({ onReady }: { onReady: () => void }): ReactElement => {
   return (
     <NavigationContainer onReady={onReady}>
-      <Stack.Navigator initialRouteName='Welcome'>
+      <Stack.Navigator initialRouteName='Upload'>
         <Stack.Screen
           name='Welcome'
           component={Welcome}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name='Home'
-          component={Home}
+          name='Ai'
+          component={Ai}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='Upload'
+          component={Upload}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

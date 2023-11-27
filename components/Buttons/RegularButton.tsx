@@ -22,6 +22,7 @@ interface ButtonProps {
   onPress: ((event: GestureResponderEvent) => void) | undefined;
   textStyle: StyleProp<TextStyle>;
   children: React.ReactNode;
+  disable: boolean;
 }
 
 const RegularButton = ({
@@ -29,9 +30,10 @@ const RegularButton = ({
   onPress,
   textStyle,
   children,
+  disable,
 }: ButtonProps): ReactElement => {
   return (
-    <ButtonView onPress={onPress} style={btnStyles}>
+    <ButtonView onPress={onPress} style={btnStyles} disable={disable}>
       <RegularText textStyles={textStyle}>{children}</RegularText>
     </ButtonView>
   );
