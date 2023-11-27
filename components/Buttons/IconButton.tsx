@@ -1,10 +1,5 @@
 import React, { ReactElement } from 'react';
-import {
-  GestureResponderEvent,
-  StyleProp,
-  TextStyle,
-  ViewStyle,
-} from 'react-native';
+import { GestureResponderEvent, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
 

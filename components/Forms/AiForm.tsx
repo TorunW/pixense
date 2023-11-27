@@ -15,6 +15,7 @@ import { API_KEY } from '@env';
 import { Configuration, OpenAIApi } from 'openai';
 import styled from 'styled-components/native';
 import { useStoreDispatch } from '../../store/module';
+import { limit } from 'firebase/firestore';
 
 const configuration = new Configuration({
   apiKey: API_KEY,
@@ -34,16 +35,21 @@ const AiForm = (): ReactElement => {
   const timestamp = useStoreState((state) => state.timestamp);
   const setClickCounter = useStoreActions((actions) => actions.setClickCounter);
   const setTimestamp = useStoreActions((actions) => actions.setTimestamp);
+  const imageUrl = useStoreState((state) => state.aiImageUrl);
+  const setImageUrl = useStoreActions((actions) => actions.setAiImageUrl);
   const [limitReached, setLimitReached] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [userPrompt, setUserPrompt] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
   const [error, setError] = useState(false);
   const dispatch = useStoreDispatch();
 
   useEffect(() => {
     getAmountOfClickOnRefresh();
   }, []);
+
+  useEffect(() => {
+    if (imageUrl) dispatch.getTags(imageUrl);
+  }, [imageUrl]);
 
   const getAmountOfClickOnRefresh = async () => {
     const amountOfClicks = await AsyncStorage.getItem('clicks');
@@ -76,7 +82,6 @@ const AiForm = (): ReactElement => {
 
   const checkTimelapsedSinceFirstImage = async () => {
     const HOUR = 3600000;
-    const TWOMINUTES = 60000 * 2;
 
     if (timestamp !== null && timestamp + HOUR <= Date.now()) {
       const newTimestamp = Date.now();
@@ -87,7 +92,7 @@ const AiForm = (): ReactElement => {
 
       await AsyncStorage.setItem('timestamp', newTimestamp.toString());
       await AsyncStorage.setItem('clicks', '0');
-    } else if (timestamp !== null && timestamp + TWOMINUTES > Date.now()) {
+    } else if (timestamp !== null && timestamp + HOUR > Date.now()) {
       setLimitReached(true);
     }
   };
@@ -104,13 +109,15 @@ const AiForm = (): ReactElement => {
         n: 1,
         size: '512x512',
       });
-      console.log(res, 'risispis');
       if (res.data.data[0]) {
         setImageUrl(res.data.data[0].url as string);
-        dispatch.getTags(imageUrl);
       }
     } catch (error) {
-      console.log(error, 'hihihih');
+      setError(true);
+      const updateClickCounter = clickCounter - 1;
+      setClickCounter(updateClickCounter);
+      const updatedClickCounterToString = updateClickCounter.toString();
+      await AsyncStorage.setItem('clicks', updatedClickCounterToString);
     }
 
     setIsLoading(false);
@@ -125,17 +132,25 @@ const AiForm = (): ReactElement => {
 
   return (
     <>
-      <InputRow>
-        <RegularInput
-          value={userPrompt}
-          onChange={onChange}
-          placeholder='Enter your prompt'
-        />
-        <SmallText>{clickCounter}/4</SmallText>
-      </InputRow>
-      {error && <SmallText textStyles={{ fontSize: 16 }}>Errror</SmallText>}
+      {!limitReached && (
+        <InputRow>
+          <RegularInput
+            value={userPrompt}
+            onChange={onChange}
+            placeholder='Enter your prompt'
+          />
+          <SmallText>{clickCounter}/4</SmallText>
+        </InputRow>
+      )}
+      {error && (
+        <SmallText textStyles={{ fontSize: 16, textAlign: 'center' }}>
+          An error occured, try again.
+        </SmallText>
+      )}
       {limitReached === true ? (
-        <RegularText>Limit reached try again in an hour</RegularText>
+        <RegularText textStyles={{ textAlign: 'center' }}>
+          Limit reached try again in an hour
+        </RegularText>
       ) : (
         <RegularButton
           disable={isLoading !== true ? false : true}

@@ -128,7 +128,7 @@ const TagForm = (): ReactElement => {
     <>
       <IconButton
         name='copy'
-        color={colors.white}
+        color={colors.grayLight}
         size={30}
         onPress={() => console.log('copy text')}
         btnStyle={{

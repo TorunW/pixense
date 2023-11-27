@@ -35,7 +35,7 @@ const BottomSection = styled.View`
 
 const Ai = (): ReactElement => {
   const imageUrl = useStoreState((state) => state.aiImageUrl);
-  console.log(imageUrl);
+  console.log(imageUrl, 'eheheheh');
 
   return (
     <BackgroundImage source={background}>
@@ -45,7 +45,7 @@ const Ai = (): ReactElement => {
         {imageUrl !== '' ? (
           <IconButton
             name='download'
-            color={colors.white}
+            color={colors.grayLight}
             size={30}
             onPress={() => downloadImage(imageUrl)}
             btnStyle={{ position: 'absolute', top: 15, right: 15, zIndex: 10 }}
