@@ -8,12 +8,19 @@ import placeholder_img from '../assets/backgounds/instagram-model-outfit-in-a-gr
 import { useStoreState } from '../store/module';
 import FormNaigator from '../components/navigators/FormNavigator';
 import UploadForm from '../components/Forms/UploadForm';
+import IconButton from '../components/Buttons/IconButton';
+import { colors } from '../components/colors';
 
 const BackgroundImage = styled.ImageBackground`
   flex: 1;
   height: 100%;
   width: 100%;
   object-fit: cover;
+`;
+
+const TopSection = styled.View`
+  position: relative;
+  flex: 1;
 `;
 
 const BottomSection = styled.View`
@@ -32,11 +39,14 @@ const Upload = (): ReactElement => {
     <BackgroundImage source={background}>
       <StatusBar style='light' />
       <FormNaigator />
-      <BigImage
-        source={imageUrl !== '' ? { uri: imageUrl } : placeholder_img}
-      />
+
+      <TopSection>
+        <BigImage
+          source={imageUrl !== '' ? { uri: imageUrl } : placeholder_img}
+        />
+      </TopSection>
       <BottomSection>
-        {imageUrl !== '' ? <TagForm /> : ''}
+        {imageUrl === '' ? <TagForm /> : ''}
         <UploadForm />
       </BottomSection>
     </BackgroundImage>

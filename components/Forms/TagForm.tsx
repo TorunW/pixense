@@ -3,6 +3,7 @@ import { useStoreState } from '../../store/module';
 import styled from 'styled-components/native';
 import SmallText from '../Texts/SmallText';
 import { colors } from '../colors';
+import IconButton from '../Buttons/IconButton';
 
 const dummyData = [
   { confidence: 33.7128410339355, tag: { en: 'person' } },
@@ -124,17 +125,30 @@ const TagForm = (): ReactElement => {
   const tags = useStoreState((state) => state.tags);
 
   return (
-    <TagsView
-      data={tags.length !== 0 ? tags : dummyData}
-      renderItem={({ item }: any) => (
-        <TagContainer>
-          <SmallText># {item.tag.en}</SmallText>
-        </TagContainer>
-      )}
-      horizontal={false}
-      numColumns={4}
-      columnWrapperStyle={{ gap: 8, marginVertical: 4, flexWrap: 'wrap' }}
-    />
+    <>
+      <IconButton
+        name='copy'
+        color={colors.white}
+        size={30}
+        onPress={() => console.log('copy text')}
+        btnStyle={{
+          position: 'absolute',
+          right: 10,
+          top: 4,
+          zIndex: 10,
+        }}
+      />
+      <TagsView
+        data={tags.length !== 0 ? tags : dummyData}
+        renderItem={({ item }: any) => (
+          <TagContainer>
+            <SmallText># {item.tag.en}</SmallText>
+          </TagContainer>
+        )}
+        numColumns={9}
+        columnWrapperStyle={{ gap: 8, marginVertical: 4, flexWrap: 'wrap' }}
+      />
+    </>
   );
 };
 

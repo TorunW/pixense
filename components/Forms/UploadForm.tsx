@@ -36,7 +36,7 @@ const UploadForm = (): ReactElement => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       base64: true,
       allowsEditing: true,
-      aspect: [9, 16],
+      aspect: [1, 1],
       quality: 1,
     });
 

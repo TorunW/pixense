@@ -78,7 +78,7 @@ const AiForm = (): ReactElement => {
     const HOUR = 3600000;
     const TWOMINUTES = 60000 * 2;
 
-    if (timestamp !== null && timestamp + TWOMINUTES <= Date.now()) {
+    if (timestamp !== null && timestamp + HOUR <= Date.now()) {
       const newTimestamp = Date.now();
 
       setLimitReached(false);
@@ -104,6 +104,7 @@ const AiForm = (): ReactElement => {
         n: 1,
         size: '512x512',
       });
+      console.log(res, 'risispis');
       if (res.data.data[0]) {
         setImageUrl(res.data.data[0].url as string);
         dispatch.getTags(imageUrl);
