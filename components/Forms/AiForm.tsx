@@ -48,7 +48,8 @@ const AiForm = (): ReactElement => {
   }, []);
 
   useEffect(() => {
-    if (imageUrl) dispatch.getTags(imageUrl);
+    //now it will get everytime the page is opened and theres and image url, uneccerasy and will cost money
+    // if (imageUrl) dispatch.getTags(imageUrl);
   }, [imageUrl]);
 
   const getAmountOfClickOnRefresh = async () => {
@@ -81,7 +82,8 @@ const AiForm = (): ReactElement => {
   };
 
   const checkTimelapsedSinceFirstImage = async () => {
-    const HOUR = 3600000;
+    //const HOUR = 3600000;
+    const HOUR = 36000;
 
     if (timestamp !== null && timestamp + HOUR <= Date.now()) {
       const newTimestamp = Date.now();

@@ -10,7 +10,9 @@ import { useStoreState } from '../store/module';
 import FormNaigator from '../components/navigators/FormNavigator';
 import IconButton from '../components/Buttons/IconButton';
 import { colors } from '../components/colors';
-import { downloadImage } from '../helpers/downloadImage';
+import { shareAsync } from 'expo-sharing';
+import * as FileSystem from 'expo-file-system';
+import { Platform } from 'react-native';
 
 const BackgroundImage = styled.ImageBackground`
   flex: 1;
@@ -35,7 +37,44 @@ const BottomSection = styled.View`
 
 const Ai = (): ReactElement => {
   const imageUrl = useStoreState((state) => state.aiImageUrl);
-  console.log(imageUrl, 'eheheheh');
+
+  const downloadFromUrl = async (imageUrl: string) => {
+    console.log('first');
+    const filename = `pixense${Date.now()}.png`;
+    const result = await FileSystem.downloadAsync(
+      imageUrl,
+      FileSystem.documentDirectory + filename
+    );
+
+    save(result.uri, filename, result.headers['Content-Type']);
+  };
+
+  const save = async (uri: string, filename: string, mimetype: string) => {
+    if (Platform.OS === 'android') {
+      const permissions =
+        await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+      if (permissions.granted) {
+        const base64 = await FileSystem.readAsStringAsync(uri, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+        await FileSystem.StorageAccessFramework.createFileAsync(
+          permissions.directoryUri,
+          filename,
+          mimetype
+        )
+          .then(async (uri) => {
+            await FileSystem.writeAsStringAsync(uri, base64, {
+              encoding: FileSystem.EncodingType.Base64,
+            });
+          })
+          .catch((e) => console.log(e));
+      } else {
+        shareAsync(uri);
+      }
+    } else {
+      shareAsync(uri);
+    }
+  };
 
   return (
     <BackgroundImage source={background}>
@@ -47,7 +86,7 @@ const Ai = (): ReactElement => {
             name='download'
             color={colors.grayLight}
             size={30}
-            onPress={() => downloadImage(imageUrl)}
+            onPress={() => downloadFromUrl(imageUrl)}
             btnStyle={{ position: 'absolute', top: 15, right: 15, zIndex: 10 }}
           />
         ) : (
