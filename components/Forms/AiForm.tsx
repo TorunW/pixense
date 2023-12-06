@@ -82,8 +82,7 @@ const AiForm = (): ReactElement => {
   };
 
   const checkTimelapsedSinceFirstImage = async () => {
-    //const HOUR = 3600000;
-    const HOUR = 36000;
+    const HOUR = 3600000;
 
     if (timestamp !== null && timestamp + HOUR <= Date.now()) {
       const newTimestamp = Date.now();

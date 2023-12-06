@@ -39,7 +39,6 @@ const Ai = (): ReactElement => {
   const imageUrl = useStoreState((state) => state.aiImageUrl);
 
   const downloadFromUrl = async (imageUrl: string) => {
-    console.log('first');
     const filename = `pixense${Date.now()}.png`;
     const result = await FileSystem.downloadAsync(
       imageUrl,

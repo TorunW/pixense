@@ -16,7 +16,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 const RootStack = ({ onReady }: { onReady: () => void }): ReactElement => {
   return (
     <NavigationContainer onReady={onReady}>
-      <Stack.Navigator initialRouteName='Ai'>
+      <Stack.Navigator initialRouteName='Welcome'>
         <Stack.Screen
           name='Welcome'
           component={Welcome}
