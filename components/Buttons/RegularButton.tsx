@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactElement } from 'react';
+import React, {  ReactElement } from 'react';
 import styled from 'styled-components/native';
 import { colors } from '../colors';
 import RegularText from '../Texts/RegularText';
