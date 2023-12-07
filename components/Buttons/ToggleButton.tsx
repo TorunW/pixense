@@ -19,7 +19,7 @@ const theme = createTheme({
       buttonContainerStyle: {
         borderColor: 'transparent',
       },
-      textStyle: { fontFamily: 'Poppins-Regular' },
+      textStyle: { fontFamily: 'Poppins-Regular', color: colors.grayLight },
       selectedTextStyle: { fontFamily: 'Poppins-Medium' },
     },
   },
@@ -48,8 +48,3 @@ const ToggleButton = ({
 };
 
 export default ToggleButton;
-
-/* <ButtonView onPress={onPress} style={btnStyles}>
-        <RegularText textStyles={textStyle}>Upload</RegularText>
-      </ButtonView>
-     */

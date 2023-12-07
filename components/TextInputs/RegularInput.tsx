@@ -15,7 +15,7 @@ const StyledInput = styled.TextInput.attrs({
   font-family: Poppins-Regular;
   font-size: 15px;
   text-align: left;
-  border: solid 1px ${colors.white};
+  border: solid 1px ${colors.outline};
   border-radius: 5px;
   padding: 8px;
   color: ${colors.white};

@@ -2,9 +2,9 @@ export const colors = {
   white: '#fefdfd',
 
   primary: '#5f43b2',
-  secondary: '#4c3f6d',
-  accent: '#ffb4a1',
+  secondary: '#321684',
+  outline: '#A490DE',
 
-  grayLight: '#878787',
+  grayLight: '#8EA6DC',
   grayDark: '#110F0F',
 };
