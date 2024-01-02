@@ -1,9 +1,10 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { useStoreState } from '../../store/module';
 import styled from 'styled-components/native';
 import SmallText from '../Texts/SmallText';
 import { colors } from '../colors';
 import IconButton from '../Buttons/IconButton';
+import * as Clipboard from 'expo-clipboard';
 
 const dummyData = [
   { confidence: 33.7128410339355, tag: { en: 'person' } },
@@ -122,29 +123,45 @@ const TagContainer = styled.Pressable`
 `;
 
 const TagForm = (): ReactElement => {
-  const tags = useStoreState((state) => state.tags);
+  const tagArray = useStoreState((state) => state.tags);
+
+  const copyToClipboard = async () => {
+    let tagsToClipboard: string[] = [];
+    tagArray.forEach((item) => tagsToClipboard.push(`#${item.tag.en}`));
+
+    const textToClipborad = tagsToClipboard.toString().replace(/,/g, ' ');
+    await Clipboard.setStringAsync(textToClipborad);
+  };
 
   return (
     <>
-      <IconButton
-        name='copy'
-        color={colors.grayLight}
-        size={30}
-        onPress={() => console.log('copy text')}
-        btnStyle={{
-          position: 'absolute',
-          right: 10,
-          top: 4,
-          zIndex: 10,
-        }}
-      />
+      {tagArray.length !== 0 ? (
+        <IconButton
+          name='copy'
+          color={colors.grayLight}
+          size={30}
+          onPress={copyToClipboard}
+          btnStyle={{
+            position: 'absolute',
+            right: 10,
+            top: 4,
+            zIndex: 10,
+          }}
+        />
+      ) : (
+        ''
+      )}
       <TagsView
-        data={tags.length !== 0 ? tags : dummyData}
-        renderItem={({ item }: any) => (
-          <TagContainer>
-            <SmallText># {item.tag.en}</SmallText>
-          </TagContainer>
-        )}
+        data={tagArray.length !== 0 ? tagArray : 'Error try reload the app'}
+        renderItem={({ item }: any) =>
+          tagArray.length !== 0 ? (
+            <TagContainer>
+              <SmallText># {item?.tag?.en}</SmallText>
+            </TagContainer>
+          ) : (
+            ''
+          )
+        }
         numColumns={9}
         columnWrapperStyle={{ gap: 8, marginVertical: 4, flexWrap: 'wrap' }}
       />

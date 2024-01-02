@@ -33,6 +33,8 @@ const BottomSection = styled.View`
 const Upload = (): ReactElement => {
   const imageUrl = useStoreState((state) => state.selectedImage);
 
+  console.log(imageUrl, 'hello');
+
   return (
     <BackgroundImage source={background}>
       <StatusBar style='light' />
