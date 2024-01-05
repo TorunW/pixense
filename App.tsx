@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import RootStack from './components/navigators/RootStack';
@@ -21,8 +21,6 @@ export default function App() {
         await SplashScreen.preventAutoHideAsync();
       } catch (e) {
         console.warn(e);
-
-        //TODO make a error page
       }
     }
     prepare();

@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import styled from 'styled-components/native';
 import background from '../assets/backgounds/home_bg.png';
@@ -13,6 +13,7 @@ import { colors } from '../components/colors';
 import { shareAsync } from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import { Platform } from 'react-native';
+import ErrorMessage from '../components/Errors/ErrorMessage';
 
 const BackgroundImage = styled.ImageBackground`
   flex: 1;
@@ -36,7 +37,8 @@ const BottomSection = styled.View`
 `;
 
 const Ai = (): ReactElement => {
-  const imageUrl = useStoreState((state) => state.aiImageUrl);
+  const imageUrl: string | null = useStoreState((state) => state.aiImageUrl);
+  const [error, setError] = useState(false);
 
   const downloadFromUrl = async (imageUrl: string) => {
     const filename = `pixense${Date.now()}.png`;
@@ -66,7 +68,9 @@ const Ai = (): ReactElement => {
               encoding: FileSystem.EncodingType.Base64,
             });
           })
-          .catch((e) => console.log(e));
+          .catch((e) => {
+            setError(true);
+          });
       } else {
         shareAsync(uri);
       }
@@ -85,7 +89,7 @@ const Ai = (): ReactElement => {
             name='download'
             color={colors.grayLight}
             size={30}
-            onPress={() => downloadFromUrl(imageUrl)}
+            onPress={() => downloadFromUrl(imageUrl !== null ? imageUrl : '')}
             btnStyle={{ position: 'absolute', top: 15, right: 15, zIndex: 10 }}
           />
         ) : (
@@ -96,6 +100,7 @@ const Ai = (): ReactElement => {
         />
       </TopSection>
       <BottomSection>
+        {error && <ErrorMessage>An error occured, try again.</ErrorMessage>}
         {imageUrl !== '' ? <TagForm /> : ''}
         <AiForm />
       </BottomSection>

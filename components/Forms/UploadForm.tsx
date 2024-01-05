@@ -1,23 +1,23 @@
 import { ActivityIndicator, Image, View } from 'react-native';
 import React, { ReactElement, useEffect, useState } from 'react';
-import RegularText from '../Texts/RegularText';
 import * as ImagePicker from 'expo-image-picker';
 import {
   useStoreDispatch,
   useStoreState,
   useStoreActions,
 } from '../../store/module';
-import SmallText from '../Texts/SmallText';
 import RegularButton from '../Buttons/RegularButton';
 import { storage } from '../../firebaseConfig';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 import { colors } from '../colors';
+import ErrorMessage from '../Errors/ErrorMessage';
 
 const UploadForm = (): ReactElement => {
   const state = useStoreState((state) => state);
   const setSelectedImage = useStoreActions(
     (actions) => actions.setSelectedImage
   );
+  const setError = useStoreActions((actions) => actions.setImageUploadError);
   const selectedImage = state.selectedImage;
   const dispatch = useStoreDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -76,9 +76,8 @@ const UploadForm = (): ReactElement => {
         })
         .catch((err) => {
           console.log(err);
-          //TODO make a error page
-
           setIsLoading(false);
+          setError(true);
         });
     }
   };
@@ -91,15 +90,16 @@ const UploadForm = (): ReactElement => {
         setIsImageSelected(false);
       })
       .catch((error) => {
-        // Handle any errors
         console.log(error.message);
-                //TODO make a error page
-
+        setError(true);
       });
   };
 
   return (
     <>
+      {state.imageUploadError && (
+        <ErrorMessage>An error occured, try again.</ErrorMessage>
+      )}
       <RegularButton
         disable={isLoading !== true ? false : true}
         textStyle={{}}

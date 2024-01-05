@@ -28,6 +28,8 @@ export interface StoreModel {
   setSelectedImage: Action<StoreModel, string>;
   selectedIndex: number;
   setSelectedIndex: Action<StoreModel, number>;
+  imageUploadError: boolean;
+  setImageUploadError: Action<StoreModel, boolean>;
 }
 
 export const store = createStore<StoreModel>({
@@ -70,6 +72,10 @@ export const store = createStore<StoreModel>({
   selectedIndex: 0,
   setSelectedIndex: action((state, payload) => {
     state.selectedIndex = payload;
+  }),
+  imageUploadError: false,
+  setImageUploadError: action((state, payload) => {
+    state.imageUploadError = payload;
   }),
 });
 
