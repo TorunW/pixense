@@ -79,6 +79,7 @@ const Welcome = (): ReactElement => {
           <RegularButton
             onPress={() => navigation.navigate('Ai')}
             textStyle={{}}
+            disable={false}
           >
             Get Started
           </RegularButton>

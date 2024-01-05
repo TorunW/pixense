@@ -2,6 +2,7 @@ import {
   ActivityIndicator,
   NativeSyntheticEvent,
   TextInputChangeEventData,
+  View,
 } from 'react-native';
 import React, { ReactElement, useEffect, useState } from 'react';
 import RegularText from '../Texts/RegularText';
@@ -15,6 +16,7 @@ import { API_KEY } from '@env';
 import { Configuration, OpenAIApi } from 'openai';
 import styled from 'styled-components/native';
 import { useStoreDispatch } from '../../store/module';
+import ErrorMessage from '../Errors/ErrorMessage';
 
 const configuration = new Configuration({
   apiKey: API_KEY,
@@ -47,8 +49,7 @@ const AiForm = (): ReactElement => {
   }, []);
 
   useEffect(() => {
-    //now it will get everytime the page is opened and theres and image url, uneccerasy and will cost money
-    // if (imageUrl) dispatch.getTags(imageUrl);
+    if (imageUrl) dispatch.getTags(imageUrl);
   }, [imageUrl]);
 
   const getAmountOfClickOnRefresh = async () => {
@@ -76,8 +77,7 @@ const AiForm = (): ReactElement => {
         setIsLoading(false);
       }
     } else {
-      console.log('empty');
-      //TODO make a error page
+      setError(true);
     }
   };
 
@@ -95,6 +95,7 @@ const AiForm = (): ReactElement => {
       await AsyncStorage.setItem('clicks', '0');
     } else if (timestamp !== null && timestamp + HOUR > Date.now()) {
       setLimitReached(true);
+      setError(false);
     }
   };
 
@@ -133,6 +134,7 @@ const AiForm = (): ReactElement => {
 
   return (
     <>
+      {error && <ErrorMessage>An error occured, try again.</ErrorMessage>}
       {!limitReached && (
         <InputRow>
           <RegularInput
@@ -143,15 +145,16 @@ const AiForm = (): ReactElement => {
           <SmallText>{clickCounter}/4</SmallText>
         </InputRow>
       )}
-      {error && (
-        <SmallText textStyles={{ fontSize: 16, textAlign: 'center' }}>
-          An error occured, try again.
-        </SmallText>
-      )}
       {limitReached === true ? (
-        <RegularText textStyles={{ textAlign: 'center' }}>
-          Limit reached try again in an hour
-        </RegularText>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <RegularText
+            textStyles={{
+              textAlign: 'center',
+            }}
+          >
+            Limit reached try again in an hour
+          </RegularText>
+        </View>
       ) : (
         <RegularButton
           disable={isLoading !== true ? false : true}

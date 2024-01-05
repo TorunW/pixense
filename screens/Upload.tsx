@@ -8,6 +8,8 @@ import placeholder_img from '../assets/backgounds/instagram-model-outfit-in-a-gr
 import { useStoreState } from '../store/module';
 import FormNaigator from '../components/navigators/FormNavigator';
 import UploadForm from '../components/Forms/UploadForm';
+import IconButton from '../components/Buttons/IconButton';
+import { colors } from '../components/colors';
 
 const BackgroundImage = styled.ImageBackground`
   flex: 1;
@@ -32,8 +34,7 @@ const BottomSection = styled.View`
 
 const Upload = (): ReactElement => {
   const imageUrl = useStoreState((state) => state.selectedImage);
-
-  console.log(imageUrl, 'hello');
+  const error = useStoreState((state) => state.imageUploadError);
 
   return (
     <BackgroundImage source={background}>
@@ -41,9 +42,22 @@ const Upload = (): ReactElement => {
       <FormNaigator />
 
       <TopSection>
-        <BigImage
-          source={imageUrl !== '' ? { uri: imageUrl } : placeholder_img}
-        />
+        {error !== true ? (
+          <BigImage source={imageUrl !== '' ? imageUrl : placeholder_img} />
+        ) : (
+          <IconButton
+            type={'material'}
+            name={'broken-image'}
+            size={100}
+            color={colors.white}
+            btnStyle={{
+              flex: 1,
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          />
+        )}
       </TopSection>
       <BottomSection>
         {imageUrl === '' ? <TagForm /> : ''}

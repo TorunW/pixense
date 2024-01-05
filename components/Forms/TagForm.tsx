@@ -136,35 +136,33 @@ const TagForm = (): ReactElement => {
   return (
     <>
       {tagArray.length !== 0 ? (
-        <IconButton
-          name='copy'
-          color={colors.grayLight}
-          size={30}
-          onPress={copyToClipboard}
-          btnStyle={{
-            position: 'absolute',
-            right: 10,
-            top: 4,
-            zIndex: 10,
-          }}
-        />
+        <>
+          <IconButton
+            name='copy'
+            color={colors.grayLight}
+            size={30}
+            onPress={copyToClipboard}
+            btnStyle={{
+              position: 'absolute',
+              right: 10,
+              top: 4,
+              zIndex: 10,
+            }}
+          />
+          <TagsView
+            data={tagArray}
+            renderItem={({ item }: any) => (
+              <TagContainer>
+                <SmallText># {item?.tag?.en}</SmallText>
+              </TagContainer>
+            )}
+            numColumns={9}
+            columnWrapperStyle={{ gap: 8, marginVertical: 4, flexWrap: 'wrap' }}
+          />
+        </>
       ) : (
-        ''
+        <></>
       )}
-      <TagsView
-        data={tagArray.length !== 0 ? tagArray : 'Error try reload the app'}
-        renderItem={({ item }: any) =>
-          tagArray.length !== 0 ? (
-            <TagContainer>
-              <SmallText># {item?.tag?.en}</SmallText>
-            </TagContainer>
-          ) : (
-            ''
-          )
-        }
-        numColumns={9}
-        columnWrapperStyle={{ gap: 8, marginVertical: 4, flexWrap: 'wrap' }}
-      />
     </>
   );
 };
