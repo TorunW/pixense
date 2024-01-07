@@ -116,7 +116,7 @@ const AiForm = (): ReactElement => {
       }
     } catch (error) {
       setError(true);
-      const updateClickCounter = clickCounter - 1;
+      const updateClickCounter = clickCounter === 0 ? 0 : -1;
       setClickCounter(updateClickCounter);
       const updatedClickCounterToString = updateClickCounter.toString();
       await AsyncStorage.setItem('clicks', updatedClickCounterToString);
