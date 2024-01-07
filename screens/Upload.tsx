@@ -43,7 +43,15 @@ const Upload = (): ReactElement => {
 
       <TopSection>
         {error !== true ? (
-          <BigImage source={imageUrl !== '' ? imageUrl : placeholder_img} />
+          <BigImage
+            source={
+              imageUrl !== ''
+                ? {
+                    uri: imageUrl,
+                  }
+                : placeholder_img
+            }
+          />
         ) : (
           <IconButton
             type={'material'}
