@@ -68,7 +68,7 @@ const Upload = (): ReactElement => {
         )}
       </TopSection>
       <BottomSection>
-        {imageUrl === '' ? <TagForm /> : ''}
+        {imageUrl !== '' ? <TagForm /> : ''}
         <UploadForm />
       </BottomSection>
     </BackgroundImage>
