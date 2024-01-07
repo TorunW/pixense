@@ -26,8 +26,8 @@ export interface StoreModel {
   setAiImageUrl: Action<StoreModel, string>;
   selectedImage: string | null;
   setSelectedImage: Action<StoreModel, string>;
-  selectedIndex: number;
-  setSelectedIndex: Action<StoreModel, number>;
+  value: string;
+  setValue: Action<StoreModel, string>;
   imageUploadError: boolean;
   setImageUploadError: Action<StoreModel, boolean>;
 }
@@ -69,9 +69,9 @@ export const store = createStore<StoreModel>({
   setSelectedImage: action((state, payload) => {
     state.selectedImage = payload;
   }),
-  selectedIndex: 0,
-  setSelectedIndex: action((state, payload) => {
-    state.selectedIndex = payload;
+  value: 'ai',
+  setValue: action((state, payload) => {
+    state.value = payload;
   }),
   imageUploadError: false,
   setImageUploadError: action((state, payload) => {
