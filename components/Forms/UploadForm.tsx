@@ -1,4 +1,4 @@
-import { ActivityIndicator, Image, View } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import React, { ReactElement, useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import {
