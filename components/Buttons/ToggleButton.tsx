@@ -1,49 +1,56 @@
 import React, { ReactElement } from 'react';
 import { colors } from '../colors';
-import { ButtonGroup } from '@rneui/themed';
-import { ThemeProvider, createTheme } from '@rneui/themed';
+import { SegmentedButtons } from 'react-native-paper';
+import styled from 'styled-components/native';
 
-const theme = createTheme({
-  components: {
-    ButtonGroup: {
-      containerStyle: {
-        borderRadius: 25,
-        borderColor: `${colors.secondary}`,
-        backgroundColor: 'transparent',
-        marginTop: 35,
-      },
-      selectedButtonStyle: {
-        backgroundColor: `${colors.primary}`,
-        borderRadius: 25,
-      },
-      buttonContainerStyle: {
-        borderColor: 'transparent',
-      },
-      textStyle: { fontFamily: 'Poppins-Regular', color: colors.grayLight },
-      selectedTextStyle: { fontFamily: 'Poppins-Medium' },
-    },
-  },
-});
+const ButtonView = styled.View`
+  margin: 30px;
+`;
 
 interface ButtonProps {
-  buttons: Array<string>;
-  selectedIndex: number;
-  onPress: (value: number) => number | void;
+  value: string;
+  setValue: (value: string) => void;
+  buttons: {
+    accessibilityLabel?: string | undefined;
+    checkedColor?: string | undefined;
+    uncheckedColor?: string | undefined;
+    testID?: string | undefined;
+  }[];
 }
 
-const ToggleButton = ({
-  buttons,
-  selectedIndex,
-  onPress,
-}: ButtonProps): ReactElement => {
+const ToggleButton = ({ value, setValue }: ButtonProps): ReactElement => {
   return (
-    <ThemeProvider theme={theme}>
-      <ButtonGroup
-        buttons={buttons}
-        selectedIndex={selectedIndex}
-        onPress={onPress}
+    <ButtonView>
+      <SegmentedButtons
+        theme={{ colors: { secondary: 'red' } }}
+        value={value}
+        onValueChange={setValue}
+        buttons={[
+          {
+            value: 'ai',
+            label: 'AI',
+            uncheckedColor: colors.grayLight,
+            checkedColor: colors.white,
+            style: {
+              borderColor: `${colors.outline}`,
+              backgroundColor:
+                value === 'ai' ? `${colors.outline}` : 'transparent',
+            },
+          },
+          {
+            value: 'upload',
+            label: 'Upload',
+            uncheckedColor: colors.grayLight,
+            checkedColor: colors.white,
+            style: {
+              borderColor: `${colors.outline}`,
+              backgroundColor:
+                value === 'upload' ? `${colors.outline}` : 'transparent',
+            },
+          },
+        ]}
       />
-    </ThemeProvider>
+    </ButtonView>
   );
 };
 

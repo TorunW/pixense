@@ -13,30 +13,26 @@ type WelcomeScreenNavigationProps = NativeStackNavigationProp<
 
 const FormNavigator = () => {
   const navigation = useNavigation<WelcomeScreenNavigationProps>();
-  const selectedIndex = useStoreState((state) => state.selectedIndex);
-  const setSelectedIndex = useStoreActions(
-    (actions) => actions.setSelectedIndex
-  );
+  const buttonValue = useStoreState((state) => state.value);
+  const setButtonValue = useStoreActions((actions) => actions.setValue);
 
   useEffect(() => {
-    if (selectedIndex === 0) {
+    if (buttonValue === 'ai') {
       navigation.navigate('Ai');
-    } else if (selectedIndex === 1) {
+    } else if (buttonValue === 'upload') {
       navigation.navigate('Upload');
     }
-  }, [selectedIndex]);
+  }, [buttonValue]);
 
-  const selectForm = (value: number) => {
-    setSelectedIndex(value);
+  const selectForm = (value: string) => {
+    setButtonValue(value);
   };
 
   return (
     <ToggleButton
-      onPress={(value) => {
-        selectForm(value);
-      }}
-      selectedIndex={selectedIndex}
-      buttons={['Ai', 'Upload']}
+      value={buttonValue}
+      setValue={(value) => selectForm(value)}
+      buttons={[]}
     />
   );
 };
