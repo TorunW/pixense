@@ -111,11 +111,13 @@ const AiForm = (): ReactElement => {
         n: 1,
         size: '512x512',
       });
+      console.log(res);
       if (res.data.data[0]) {
         setImageUrl(res.data.data[0].url as string);
       }
     } catch (error) {
       setError(true);
+      console.log(error);
       const updateClickCounter = clickCounter === 0 ? 0 : -1;
       setClickCounter(updateClickCounter);
       const updatedClickCounterToString = updateClickCounter.toString();
