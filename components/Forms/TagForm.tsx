@@ -1,10 +1,11 @@
 import React, { ReactElement } from 'react';
-import { useStoreState } from '../../store/module';
+import { TagObject, useStoreState } from '../../store/module';
 import styled from 'styled-components/native';
 import SmallText from '../Texts/SmallText';
 import { colors } from '../colors';
 import IconButton from '../Buttons/IconButton';
 import * as Clipboard from 'expo-clipboard';
+import { useRoute } from '@react-navigation/native';
 
 const TagsView = styled.FlatList`
   width: 100%;
@@ -17,12 +18,17 @@ const TagContainer = styled.Pressable`
   padding: 4px;
 `;
 
-const TagForm = (): ReactElement => {
-  const tagArray = useStoreState((state) => state.tags);
+interface FormProps {
+  data: TagObject[];
+}
+
+const TagForm = ({ data }: FormProps): ReactElement => {
+  console.log(data);
+  console.table(data);
 
   const copyToClipboard = async () => {
     let tagsToClipboard: string[] = [];
-    tagArray.forEach((item) => tagsToClipboard.push(`#${item.tag.en}`));
+    data.forEach((item) => tagsToClipboard.push(`#${item.tag.en}`));
 
     const textToClipborad = tagsToClipboard.toString().replace(/,/g, ' ');
     await Clipboard.setStringAsync(textToClipborad);
@@ -30,7 +36,7 @@ const TagForm = (): ReactElement => {
 
   return (
     <>
-      {tagArray.length !== 0 ? (
+      {data !== undefined ? (
         <>
           <IconButton
             name='copy'
@@ -45,7 +51,7 @@ const TagForm = (): ReactElement => {
             }}
           />
           <TagsView
-            data={tagArray}
+            data={data}
             renderItem={({ item }: any) => (
               <TagContainer>
                 <SmallText># {item?.tag?.en}</SmallText>

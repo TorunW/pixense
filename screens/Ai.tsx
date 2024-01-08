@@ -38,7 +38,12 @@ const BottomSection = styled.View`
 
 const Ai = (): ReactElement => {
   const imageUrl: string | null = useStoreState((state) => state.aiImageUrl);
+  const tagsArr = useStoreState((state) => state.aiImageTags);
   const [error, setError] = useState(false);
+
+  console.log('*********************************************');
+  console.log(tagsArr);
+  console.log('*********************************************');
 
   const downloadFromUrl = async (imageUrl: string) => {
     const filename = `pixense${Date.now()}.png`;
@@ -101,7 +106,7 @@ const Ai = (): ReactElement => {
       </TopSection>
       <BottomSection>
         {error && <ErrorMessage>An error occured, try again.</ErrorMessage>}
-        {imageUrl !== '' ? <TagForm /> : ''}
+        {imageUrl !== '' ? <TagForm data={tagsArr} /> : ''}
         <AiForm />
       </BottomSection>
     </BackgroundImage>

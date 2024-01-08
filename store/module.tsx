@@ -15,9 +15,12 @@ export interface TagObject {
 }
 
 export interface StoreModel {
-  tags: TagObject[];
-  setTags: Action<StoreModel, TagObject[]>;
-  getTags: Thunk<StoreModel, string>;
+  aiImageTags: TagObject[];
+  setAiImageTags: Action<StoreModel, TagObject[]>;
+  getAiImageTags: Thunk<StoreModel, string>;
+  uploadedImageTags: TagObject[];
+  setUploadedImageTags: Action<StoreModel, TagObject[]>;
+  getUploadedImageTags: Thunk<StoreModel, string>;
   clickCounter: number;
   setClickCounter: Action<StoreModel, number>;
   timestamp: number | null;
@@ -33,11 +36,11 @@ export interface StoreModel {
 }
 
 export const store = createStore<StoreModel>({
-  tags: [],
-  setTags: action((state, payload) => {
-    state.tags = payload;
+  aiImageTags: [],
+  setAiImageTags: action((state, payload) => {
+    state.aiImageTags = payload;
   }),
-  getTags: thunk(async (actions, imageUrl) => {
+  getAiImageTags: thunk(async (actions, imageUrl) => {
     const apiKey = 'acc_d3b3db2709ecc58';
     const apiSecret = '8ec511604fd393114551997eb6c1465e';
 
@@ -51,7 +54,27 @@ export const store = createStore<StoreModel>({
       },
     });
     const tags = response.data?.result.tags;
-    actions.setTags(tags);
+    actions.setAiImageTags(tags);
+  }),
+  uploadedImageTags: [],
+  setUploadedImageTags: action((state, payload) => {
+    state.uploadedImageTags = payload;
+  }),
+  getUploadedImageTags: thunk(async (actions, imageUrl) => {
+    const apiKey = 'acc_d3b3db2709ecc58';
+    const apiSecret = '8ec511604fd393114551997eb6c1465e';
+
+    const url =
+      `https://${apiKey}:${apiSecret}@api.imagga.com/v2/tags?image_url=` +
+      encodeURIComponent(imageUrl);
+    const auth = base64.encode(`${apiKey}:${apiSecret}`);
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Basic ${auth}`,
+      },
+    });
+    const tags = response.data?.result.tags;
+    actions.setUploadedImageTags(tags);
   }),
   clickCounter: 0,
   setClickCounter: action((state, payload) => {
