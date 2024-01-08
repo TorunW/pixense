@@ -34,6 +34,7 @@ const BottomSection = styled.View`
 
 const Upload = (): ReactElement => {
   const imageUrl = useStoreState((state) => state.selectedImage);
+  const tagsArr = useStoreState((state) => state.uploadedImageTags);
   const error = useStoreState((state) => state.imageUploadError);
 
   return (
@@ -68,7 +69,11 @@ const Upload = (): ReactElement => {
         )}
       </TopSection>
       <BottomSection>
-        {imageUrl !== '' ? <TagForm /> : ''}
+        {imageUrl !== '' && tagsArr.length > 0 ? (
+          <TagForm data={tagsArr} />
+        ) : (
+          ''
+        )}
         <UploadForm />
       </BottomSection>
     </BackgroundImage>

@@ -85,7 +85,7 @@ const UploadForm = (): ReactElement => {
   const getUrl = (filename: string) => {
     getDownloadURL(ref(storage, `images/${filename}`))
       .then((url) => {
-        dispatch.getTags(url);
+        dispatch.getUploadedImageTags(url);
         setIsLoading(false);
         setIsImageSelected(false);
       })

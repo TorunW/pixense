@@ -49,7 +49,7 @@ const AiForm = (): ReactElement => {
   }, []);
 
   useEffect(() => {
-    if (imageUrl) dispatch.getTags(imageUrl);
+    if (imageUrl) dispatch.getAiImageTags(imageUrl);
   }, [imageUrl]);
 
   const getAmountOfClickOnRefresh = async () => {
