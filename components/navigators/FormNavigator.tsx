@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import ToggleButton from '../Buttons/ToggleButton';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../navigators/RootStack';

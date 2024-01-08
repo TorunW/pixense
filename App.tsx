@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import RootStack from './components/navigators/RootStack';
 import { StoreProvider } from 'easy-peasy';
 import { store } from './store/module';
+import 'react-native-url-polyfill/auto';
 
 SplashScreen.preventAutoHideAsync();
 
