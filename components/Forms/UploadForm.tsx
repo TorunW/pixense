@@ -15,7 +15,7 @@ import ErrorMessage from '../Errors/ErrorMessage';
 const UploadForm = (): ReactElement => {
   const state = useStoreState((state) => state);
   const setSelectedImage = useStoreActions(
-    (actions) => actions.setSelectedImage
+    (actions) => actions.setSelectedImage,
   );
   const setError = useStoreActions((actions) => actions.setImageUploadError);
   const selectedImage = state.selectedImage;
@@ -29,11 +29,11 @@ const UploadForm = (): ReactElement => {
     }
   }, [isImageSelected]);
 
-  const openImagePicker = async () => {
+  const open = async () => {
     setIsLoading(true);
 
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ['images'],
       base64: true,
       allowsEditing: true,
       aspect: [1, 1],
@@ -59,10 +59,10 @@ const UploadForm = (): ReactElement => {
           xhr.responseType = 'blob';
           xhr.open('GET', selectedImage, true);
           xhr.send(null);
-        }
+        },
       );
       const filename = selectedImage.substring(
-        selectedImage.lastIndexOf('/') + 1
+        selectedImage.lastIndexOf('/') + 1,
       );
       const fileType = filename.split('.')[filename.split('.').length - 1];
       var storageRef = ref(storage, `images/${filename}`);
@@ -103,7 +103,7 @@ const UploadForm = (): ReactElement => {
       <RegularButton
         disable={isLoading !== true ? false : true}
         textStyle={{}}
-        onPress={openImagePicker}
+        onPress={open}
       >
         {isLoading !== true ? (
           `Select an image`

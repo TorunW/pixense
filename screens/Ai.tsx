@@ -11,7 +11,7 @@ import FormNaigator from '../components/navigators/FormNavigator';
 import IconButton from '../components/Buttons/IconButton';
 import { colors } from '../components/colors';
 import { shareAsync } from 'expo-sharing';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import { Platform } from 'react-native';
 import ErrorMessage from '../components/Errors/ErrorMessage';
 
@@ -41,46 +41,52 @@ const Ai = (): ReactElement => {
   const tagsArr = useStoreState((state) => state.aiImageTags);
   const [error, setError] = useState(false);
 
-  console.log('*********************************************');
-  console.log(tagsArr);
-  console.log('*********************************************');
-
+  console.log(imageUrl);
   const downloadFromUrl = async (imageUrl: string) => {
-    const filename = `pixense${Date.now()}.png`;
-    const result = await FileSystem.downloadAsync(
-      imageUrl,
-      FileSystem.documentDirectory + filename
-    );
+    try {
+      const filename = `pixense${Date.now()}.png`;
+      const localUri = FileSystem.documentDirectory + filename;
 
-    save(result.uri, filename, result.headers['Content-Type']);
+      // download the file
+      const result = await FileSystem.downloadAsync(imageUrl, localUri);
+
+      await save(result.uri, filename);
+    } catch (e) {
+      setError(true);
+      console.log(e);
+    }
   };
 
-  const save = async (uri: string, filename: string, mimetype: string) => {
-    if (Platform.OS === 'android') {
-      const permissions =
-        await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
-      if (permissions.granted) {
-        const base64 = await FileSystem.readAsStringAsync(uri, {
-          encoding: FileSystem.EncodingType.Base64,
-        });
-        await FileSystem.StorageAccessFramework.createFileAsync(
-          permissions.directoryUri,
-          filename,
-          mimetype
-        )
-          .then(async (uri) => {
-            await FileSystem.writeAsStringAsync(uri, base64, {
-              encoding: FileSystem.EncodingType.Base64,
-            });
-          })
-          .catch((e) => {
-            setError(true);
+  const save = async (uri: string, filename: string) => {
+    try {
+      if (Platform.OS === 'android') {
+        const permissions =
+          await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+        if (permissions.granted) {
+          const base64 = await FileSystem.readAsStringAsync(uri, {
+            encoding: FileSystem.EncodingType.Base64,
           });
+
+          const fileUri =
+            await FileSystem.StorageAccessFramework.createFileAsync(
+              permissions.directoryUri,
+              filename,
+              'image/png',
+            );
+
+          await FileSystem.writeAsStringAsync(fileUri, base64, {
+            encoding: FileSystem.EncodingType.Base64,
+          });
+        } else {
+          // fallback: share if permission denied
+          await shareAsync(uri);
+        }
       } else {
-        shareAsync(uri);
+        await shareAsync(uri);
       }
-    } else {
-      shareAsync(uri);
+    } catch (e) {
+      setError(true);
+      console.log(e);
     }
   };
 
@@ -89,7 +95,7 @@ const Ai = (): ReactElement => {
       <StatusBar style='light' />
       <FormNaigator />
       <TopSection>
-        {imageUrl !== '' ? (
+        {imageUrl ? (
           <IconButton
             name='download'
             color={colors.grayLight}
@@ -97,9 +103,7 @@ const Ai = (): ReactElement => {
             onPress={() => downloadFromUrl(imageUrl !== null ? imageUrl : '')}
             btnStyle={{ position: 'absolute', top: 15, right: 15, zIndex: 10 }}
           />
-        ) : (
-          ''
-        )}
+        ) : null}
         <BigImage
           source={imageUrl !== '' ? { uri: imageUrl } : placeholder_img}
         />

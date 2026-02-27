@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 import background from '../assets/backgounds/home_bg.png';
 import TagForm from '../components/Forms/TagForm';
 import BigImage from '../components/Images/BigImage';
-import placeholder_img from '../assets/backgounds/instagram-model-outfit-in-a-greenhouse-full-body.png';
+import placeholder_img from '../assets/backgounds/home_bg_upload.jpg';
 import { useStoreState } from '../store/module';
 import FormNaigator from '../components/navigators/FormNavigator';
 import UploadForm from '../components/Forms/UploadForm';

@@ -13,16 +13,14 @@ import SmallText from '../Texts/SmallText';
 import { colors } from '../colors';
 import RegularInput from '../TextInputs/RegularInput';
 import { API_KEY } from '@env';
-import { Configuration, OpenAIApi } from 'openai';
+import OpenAI from 'openai';
 import styled from 'styled-components/native';
 import { useStoreDispatch } from '../../store/module';
 import ErrorMessage from '../Errors/ErrorMessage';
 
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: API_KEY,
 });
-
-const openai = new OpenAIApi(configuration);
 
 const InputRow = styled.View`
   flex-direction: row;
@@ -49,6 +47,7 @@ const AiForm = (): ReactElement => {
   }, []);
 
   useEffect(() => {
+    console.log(imageUrl, 'in use effect');
     if (imageUrl) dispatch.getAiImageTags(imageUrl);
   }, [imageUrl]);
 
@@ -82,7 +81,7 @@ const AiForm = (): ReactElement => {
   };
 
   const checkTimelapsedSinceFirstImage = async () => {
-    const HOUR = 3600000;
+    const HOUR = 36000;
 
     if (timestamp !== null && timestamp + HOUR <= Date.now()) {
       const newTimestamp = Date.now();
@@ -106,18 +105,23 @@ const AiForm = (): ReactElement => {
     await AsyncStorage.setItem('clicks', updatedClickCounterToString);
 
     try {
-      const res = await openai.createImage({
+      const res = await openai.images.generate({
+        model: 'dall-e-3',
         prompt: userPrompt,
         n: 1,
-        size: '512x512',
+        size: '1024x1024',
+        response_format: 'url',
       });
-      console.log(res);
-      if (res.data.data[0]) {
-        setImageUrl(res.data.data[0].url as string);
+
+      if (res.data && res.data.length > 0 && res.data[0].url) {
+        setImageUrl(res.data[0].url as string);
+        console.log(res.data[0].url);
+      } else {
+        setError(true);
       }
     } catch (error) {
       setError(true);
-      console.log(error);
+      console.log('FULL ERROR:', (error as any)?.response?.data || error);
       const updateClickCounter = clickCounter === 0 ? 0 : -1;
       setClickCounter(updateClickCounter);
       const updatedClickCounterToString = updateClickCounter.toString();
@@ -128,7 +132,7 @@ const AiForm = (): ReactElement => {
   };
 
   const onChange = (
-    e: NativeSyntheticEvent<TextInputChangeEventData>
+    e: NativeSyntheticEvent<TextInputChangeEventData>,
   ): void => {
     const value = e.nativeEvent.text;
     setUserPrompt(value);
